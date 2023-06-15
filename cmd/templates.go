@@ -360,14 +360,22 @@ func openProject(dirName string) {
 					os.Exit(1)
 				}
 			}
+			cmd := exec.Command("subl", "-p", projPath)
 
-			err = exec.Command("subl", "-p", projPath).Run()
+			// without setsid signals from ctrl+c in shell will be forwarded to the child proc
+			// causing the editor to exit
+			cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
+
+			err = cmd.Run()
 			if err != nil {
 				fmt.Println("unable to start subl:", err.Error())
 				os.Exit(1)
 			}
 		} else if editor == "code" || editor == "code-oss" {
-			err = exec.Command(editor, dirName).Run()
+			cmd := exec.Command(editor, dirName)
+			cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
+			
+			err = cmd.Run()
 			if err != nil {
 				fmt.Println("unable to start vscode:", err.Error())
 				os.Exit(1)
