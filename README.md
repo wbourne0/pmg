@@ -79,3 +79,4 @@ will add if someone asks or if I need it:
   from both but prioritize project files when reading)
 - automatic integration with nix - e.g. automatically nix-shell into `.pmg/shell.nix`
 - optional override of values for shell and editor (as opposed to just pulling from SHELL and EDITOR env vars)
+- add tests
