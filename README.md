@@ -80,3 +80,5 @@ will add if someone asks or if I need it:
 - automatic integration with nix - e.g. automatically nix-shell into `.pmg/shell.nix`
 - optional override of values for shell and editor (as opposed to just pulling from SHELL and EDITOR env vars)
 - add tests
+- (hard) - browser integration.  e.g. each project gets its own firefox profile, again with hot save enabled
+  so browser state is never lost from a project.
