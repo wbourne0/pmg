@@ -22,7 +22,7 @@ no "you have x unsaved files" prompts).
 This is mostly made for personal usage so setup isn't streamlined (though if requested I'd be happy to make
 something for that).  
 
-1. go install github.com/AllAwesome497/pmg
+1. go install github.com/wbourne0/pmg
 2. Set `PROJMGR_PROJDIR` to a directory in your `.profile` (if the directory doesn't exist, pmg should create it)
 3. (optional) Set `PROJMGR_TEMPLATE_PATH` to a directory containing templates. Create this directory & set env var
    in `.profile` to start creating custom templates w/ `pmg create-template`.
@@ -64,7 +64,7 @@ of these:
 
 ## Contributing
 
-If you want to work on this package, you can import it via `pmg i https://github.com/AllAwesome497/pmg`.  This project
+If you want to work on this package, you can import it via `pmg i https://github.com/wbourne0/pmg`.  This project
 has some special env vars to map templates to cmd/templates (source for builtin templates) and to change the project dir
 to a local directory (to make template testing easier / more contained).
 
