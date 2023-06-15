@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+go mod init "${1}"
+go get github.com/stretchr/testify/require

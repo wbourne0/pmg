@@ -1,0 +1,1 @@
+PATH="${PATH}:${projdir}/node_modules/.bin"

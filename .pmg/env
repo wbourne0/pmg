@@ -1,0 +1,2 @@
+PROJMGR_PROJDIR="${projdir}/test"
+PROJMGR_TEMPLATE_PATH="${projdir}/cmd/templates:${PROJMGR_TEMPLATE_PATH}"

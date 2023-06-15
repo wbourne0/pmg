@@ -1,0 +1,5 @@
+{
+  "transform": {
+    "^.+\\.ts$": ["esbuild-jest", { "sourcemap": true }]
+  }
+}

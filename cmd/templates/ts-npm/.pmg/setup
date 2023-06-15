@@ -1,0 +1,43 @@
+#!/bin/sh
+
+set -e
+
+name="${1}"
+echo "description?"
+read desc
+
+echo "license? (default: MIT)"
+read license
+
+pwd
+
+jq -n \
+  --arg name "${1}" \
+  --arg desc "${desc}" \
+  --arg license "${license:=MIT}" \
+  '{
+	  "name": $name,
+	  "version": "1.0.0",
+	  "description": $desc,
+	  "types": "./dist/types/index.d.ts",
+	  "scripts": {
+	    "build": "pnpm build:types && pnpm build:esm && pnpm build:cjs",
+	    "build:types": "tsc",
+	    "build:esm": "esbuild src/*.ts --outdir=dist/esm --format=esm --out-extension:.js=.mjs --sourcemap",
+	    "build:cjs": "esbuild src/*.ts --outdir=dist/cjs --format=cjs --sourcemap",
+	    "test": "jest",
+	    "prepack": "pnpm test && pnpm build"
+	  },
+	  "exports": {
+	    ".": {
+	      "import": "./dist/esm/index.mjs",
+	      "require": "./dist/cjs/index.js",
+	      "types": "./dist/types/index.d.ts"
+	    },
+	    "./package.json": "./package.json"
+	  },
+	  "license": $license
+	}' > package.json
+
+
+pnpm add -D @babel/preset-typescript @babel/core esbuild jest esbuild-jest ts-jest typescript prettier @jest/globals
