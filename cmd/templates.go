@@ -97,7 +97,6 @@ func init() {
 
 	tmpdir, _ := fs.Sub(builtinTemplates, "templates")
 
-
 	for _, tmpl := range listDirs(tmpdir) {
 		templates[tmpl] = ""
 	}
@@ -236,24 +235,23 @@ func (es embedSource) copyTo(to string) {
 		os.Exit(1)
 	}
 
-
 	fs.WalkDir(es, ".", func(path string, d fs.DirEntry, err error) error {
-	    if path == "." || path == "project.sublime-workspace" {
-	    	return nil
-	    }
+		if path == "." || path == "project.sublime-workspace" {
+			return nil
+		}
 
-	    newPath := filepath.Join(to, path)
+		newPath := filepath.Join(to, path)
 
-	    if d.IsDir() {
-	    	err := os.Mkdir(newPath, 0770)
+		if d.IsDir() {
+			err := os.Mkdir(newPath, 0770)
 
-	    	if err != nil {
-	    		fmt.Printf("failed to make directory %s: %s\n", path, err.Error())
-	    		return fs.SkipDir
-	    	}
+			if err != nil {
+				fmt.Printf("failed to make directory %s: %s\n", path, err.Error())
+				return fs.SkipDir
+			}
 
-	    	return nil
-	    }	
+			return nil
+		}
 
 		file, err := os.Create(newPath)
 
@@ -308,7 +306,6 @@ func resolveTemplate(templateName string) templateSource {
 	return folderSource(path)
 }
 
-
 func initProject(projectDir, name string) {
 	autorunPath := filepath.Join(projectDir, ".pmg/setup")
 
@@ -347,7 +344,7 @@ func openProject(dirName string) {
 		editor := os.Getenv("EDITOR")
 
 		if editor == "" {
-			fmt.Println("missing EDITOR env var")
+			fmt.Println("missing EDITOR env var; unable to open editor")
 		} else if editor == "subl" {
 			projPath := filepath.Join(dirName, "project.sublime-project")
 			_, err := os.Stat(projPath)
@@ -369,6 +366,16 @@ func openProject(dirName string) {
 				fmt.Println("unable to start subl:", err.Error())
 				os.Exit(1)
 			}
+		} else if editor == "code" || editor == "code-oss" {
+			err = exec.Command(editor, dirName).Run()
+			if err != nil {
+				fmt.Println("unable to start vscode:", err.Error())
+				os.Exit(1)
+			}
+		} else {
+			// this doesn't support vim as vim would have to share the tty with the shell
+			// which doesn't make sense
+			fmt.Println("Unsupported editor, please make a support ticket (or update EDITOR env var)")
 		}
 	}
 

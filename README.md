@@ -4,6 +4,11 @@ Creative name, right?  This is a simple cli util I've made to manage some of my 
 their corresponding envs on my systems.  This project mostly just covers my needs and might
 not be ideal for everyone else.
 
+This is designed to play nice with sublime's hot exit feature - editor state (such as history,
+unsaved files, etc) is stored in a `.sublime-workspace` file on a per-project basis, so you can
+have multiple projects open concurrently and close any window without losing data. (as a plus,
+no "you have x unsaved files" prompts).
+
 ## Features
 
 - configurable `env` file which applies to the shell instance opened w/ project
@@ -25,9 +30,30 @@ something for that).
 To generate completion, follow the steps provided via `pmg completion ${YOUR_SHELL_NAME} --help`. (\*with zsh I have
 a directory in ~/.local/completions which I append to fpath; this is where I store custom completions instead of fpath[1]).
 
+I also added `alias epm='exec pmg'` to my `.profile` - most commands spawn a shell instance and it can be handy to replace the
+current shell proc with a new one (so when it exits you aren't put back into the original shell).
+
+Another handy alias is `alias cdp='exec pmg open --no-editor'` - shorthand to cd into a project + take env.
+
+## Usage
+
+```
+# Create a project for a go executable, open an instance of your editor
+# and spawn a shell in the new project's directory.
+pmg create --template go-bin {name}
+
+# Open your editor for a project and spawn a shell in that directory
+# (with any project-specific environment variables).
+pmg open {name}
+
+# Spawn a shell without opening your editor
+pmg open --no-editor {name}
+```
+
 ## .pmg directory
 
-This directory contains special files for the project manager. Currently there's only 2 of these:
+This directory (when placed inside a project) contains special files for the project manager. Currently there's only 2
+of these:
 - `.pmg/setup` - should be an executable file.  Only exists in templates.  When a project is created from a template,
   this file will be executed in the working directory of the new project with arg1 equal to the project name.  This 
   is deleted from the project's files once executed.
@@ -44,10 +70,12 @@ to a local directory (to make template testing easier / more contained).
 
 ## To-dos / might do
 
-will add if someone asks or if i need it:
+will add if someone asks or if I need it:
 
 - more templates
 - more docs 
 - smarter logic for default project directory 
 - project-specific shell history (tbd how this would work - possibly write and read 
   from both but prioritize project files when reading)
+- automatic integration with nix - e.g. automatically nix-shell into `.pmg/shell.nix`
+- optional override of values for shell and editor (as opposed to just pulling from SHELL and EDITOR env vars)

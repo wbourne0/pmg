@@ -4,3 +4,5 @@ set -e
 
 go mod init "${1}"
 go get github.com/stretchr/testify/require
+
+mv main.go "${1}.go"
