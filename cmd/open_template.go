@@ -47,7 +47,8 @@ var openTemplateCmd = &cobra.Command{
 
 		var tmplFound bool
 
-		for _, projname := range templates {
+		for projname := range templates {
+			fmt.Println(projname, name)
 			if projname == name {
 				tmplFound = true
 				break

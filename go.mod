@@ -1,4 +1,4 @@
-module pmg
+module github.com/wbourne0/pmg
 
 go 1.20
 

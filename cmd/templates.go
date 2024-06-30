@@ -253,7 +253,13 @@ func (es embedSource) copyTo(to string) {
 			return nil
 		}
 
-		file, err := os.Create(newPath)
+		perm := fs.FileMode(0660)
+
+		if path == ".pmg/setup" {
+			perm |= 0110
+		}
+
+		file, err := os.OpenFile(newPath, os.O_CREATE | os.O_WRONLY, perm)
 
 		if err != nil {
 			fmt.Printf("failed to create file %s: %s\n", path, err)
@@ -327,6 +333,7 @@ func initProject(projectDir, name string) {
 
 	if err := cmd.Run(); err != nil {
 		fmt.Println("error occurred while running setup:", err.Error())
+		os.Exit(1)
 	}
 
 	if err := os.Remove(autorunPath); err != nil {
